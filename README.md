@@ -28,8 +28,6 @@ $ pipx install waterloo
 done! ✨ 🌟 ✨
 ```
 
-(NOTE: we currently have to install from GitHub due to using a forked version Bowler, PyPI installation will be available once our changes are upstreamed)
-
 ### Basic Usage
 
 After we parse the docstrings and prepare the type comments (and imports of mentioned types), the resulting modifications to the files are performed by [Bowler](https://pybowler.io/). This tool provides a few nice features such as an optional interactive "diff" interface (or just preview diffs without writing changes yet as a "dry run").
