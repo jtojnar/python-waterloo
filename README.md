@@ -30,7 +30,7 @@ done! ✨ 🌟 ✨
 
 ### Basic Usage
 
-After we parse the docstrings and prepare the type comments (and imports of mentioned types), the resulting modifications to the files are performed by [Bowler](https://pybowler.io/). This tool provides a few nice features such as an optional interactive "diff" interface (or just preview diffs without writing changes yet as a "dry run").
+After we parse the docstrings and prepare the type comments (and imports of mentioned types), the resulting modifications to the files are performed by [Bowler](https://pybowler.io/) (Python refactoring tool by Facebook). Bowler provides a few nice features such as an optional interactive "diff" interface (or just preview diffs without writing changes yet as a "dry run").
 
 In short you can...
 ```
