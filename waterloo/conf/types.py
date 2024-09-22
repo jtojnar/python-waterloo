@@ -1,7 +1,8 @@
 from enum import Enum
 from typing import Dict, Optional, Union, no_type_check
 
-from pydantic import BaseSettings, validator
+from pydantic import field_validator
+from pydantic_settings import SettingsConfigDict, BaseSettings
 
 from waterloo.types import (
     LOG_LEVEL_LABELS,
@@ -19,16 +20,14 @@ class CoerceEnumSettings(BaseSettings):
 
     @no_type_check
     def __setattr__(self, name, value):
-        field = self.__fields__[name]
-        if issubclass(field.type_, Enum) and not isinstance(value, Enum):
-            value = field.type_[value]
+        field = self.model_fields[name]
+        if issubclass(field.annotation, Enum) and not isinstance(value, Enum):
+            value = field.annotation[value]
         return super().__setattr__(name, value)
 
 
 class Settings(CoerceEnumSettings):
-    class Config:
-        validate_assignment = True
-        env_prefix = "WATERLOO_"
+    model_config = SettingsConfigDict(validate_assignment=True, env_prefix="WATERLOO_")
 
     PYTHON_VERSION: str = "2.7"
 
@@ -43,7 +42,8 @@ class Settings(CoerceEnumSettings):
     VERBOSE_ECHO: bool = True
     LOG_LEVEL: LogLevel = LogLevel.INFO
 
-    @validator("IMPORT_COLLISION_POLICY")
+    @field_validator("IMPORT_COLLISION_POLICY")
+    @classmethod
     def key_to_member(
         cls, value: Union[ImportCollisionPolicy, str]
     ) -> ImportCollisionPolicy:
@@ -51,7 +51,8 @@ class Settings(CoerceEnumSettings):
             return value
         return ImportCollisionPolicy[value]
 
-    @validator("ECHO_STYLES")
+    @field_validator("ECHO_STYLES")
+    @classmethod
     def echo_styles_required_fields(
         cls, value: Optional[Dict[str, str]]
     ) -> Optional[Dict[str, str]]:
