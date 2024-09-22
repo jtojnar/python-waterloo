@@ -25,6 +25,19 @@ class Types(str, Enum):
     NONE = "None"
 
 
+class ImportStrategy(Enum):
+    USE_EXISTING = auto()  # don't add any import, strip dotted path from docstring type
+    USE_EXISTING_DOTTED = auto()  # don't add any import
+    ADD_FROM = auto()  # from <dotted.package.path> import <name list>
+    ADD_DOTTED = auto()  # import <dotted.package.path>
+
+
+DOTTED_PATH_STRATEGIES: Final = {
+    ImportStrategy.ADD_DOTTED,
+    ImportStrategy.USE_EXISTING_DOTTED,
+}
+
+
 # https://sphinxcontrib-napoleon.readthedocs.io/en/latest/#docstring-sections
 VALID_ARGS_SECTION_NAMES: Final = {
     "Args",
@@ -42,7 +55,7 @@ VALID_RETURNS_SECTION_NAMES: Final = {
     "Yields": (r"Yields", ReturnsSection.YIELDS),
 }
 
-NameToStrategy_T = Dict[str, "ImportStrategy"]
+NameToStrategy_T = Dict[str, ImportStrategy]
 
 
 class TypeAtom(NamedTuple):
@@ -322,19 +335,6 @@ class LocalTypes:
 
     def __len__(self):
         return len(self.all_names)
-
-
-class ImportStrategy(Enum):
-    USE_EXISTING = auto()  # don't add any import, strip dotted path from docstring type
-    USE_EXISTING_DOTTED = auto()  # don't add any import
-    ADD_FROM = auto()  # from <dotted.package.path> import <name list>
-    ADD_DOTTED = auto()  # import <dotted.package.path>
-
-
-DOTTED_PATH_STRATEGIES: Final = {
-    ImportStrategy.ADD_DOTTED,
-    ImportStrategy.USE_EXISTING_DOTTED,
-}
 
 
 class AmbiguousTypeError(Exception):
