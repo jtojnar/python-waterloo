@@ -27,7 +27,12 @@ class CoerceEnumSettings(BaseSettings):
 
 
 class Settings(CoerceEnumSettings):
-    model_config = SettingsConfigDict(validate_assignment=True, env_prefix="WATERLOO_")
+    model_config = SettingsConfigDict(
+        validate_assignment=True,
+        env_prefix="WATERLOO_",
+        # TODO: replace all str field values strictly with str
+        coerce_numbers_to_str=True,
+    )
 
     PYTHON_VERSION: str = "2.7"
 
